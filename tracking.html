@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tracking | Toko Buku Ceria</title>
+</head>
+<body>
+  <script>
+    // ======== DATA PESANAN ========
+    const orders = [
+      {
+        id: "DO-1762525434333",
+        nama: "Sovy",
+        alamat: "Bekasi",
+        items: "Bumi Manusia ×1",
+        harga: "Rp 120.000",
+        tanggal: "07/11/2025, 21:23:54",
+        status: "Sedang dikemas",
+        riwayat: ["Pesanan dibuat", "Menunggu konfirmasi", "Sedang dikemas"]
+      },
+      {
+        id: "DO-1762528543226",
+        nama: "Sovy",
+        alamat: "Bekasi",
+        items: "Filosofi Kopi ×1",
+        harga: "Rp 95.000",
+        tanggal: "07/11/2025, 22:15:43",
+        status: "Sedang dikirim",
+        riwayat: ["Pesanan dibuat", "Sedang dikemas", "Sedang dikirim"]
+      }
+    ];
+
+    // ======== GAYA (CSS) LANGSUNG DARI JS ========
+    const style = document.createElement("style");
+    style.textContent = `
+      body {
+        font-family: 'Poppins', sans-serif;
+        background: linear-gradient(to right, #a6f3e3, #fbc3d6);
+        margin: 0;
+        padding: 0;
+      }
+      .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 40px;
+        background: white;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      }
+      .nav-links a {
+        text-decoration: none;
+        margin: 0 15px;
+        color: #055a55;
+        font-weight: 500;
+      }
+      .nav-links a.active {
+        color: #e75480;
+        font-weight: bold;
+      }
+      .logout-btn {
+        background: white;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 5px 12px;
+        cursor: pointer;
+      }
+      .container {
+        padding: 30px;
+      }
+      h2 {
+        color: #e75480;
+        margin-bottom: 20px;
+      }
+      .search-box {
+        margin-bottom: 20px;
+      }
+      .search-box input {
+        width: 100%;
+        padding: 10px;
+        border-radius: 10px;
+        border: 1px solid #ccc;
+        font-size: 14px;
+      }
+      .order-card {
+        background: white;
+        border-radius: 15px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+      }
+      .status-buttons button {
+        margin-right: 10px;
+        border: none;
+        padding: 6px 14px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 500;
+      }
+      button.kemas { background: #d9f8f3; }
+      button.kirim { background: #f3e6ff; }
+      button.selesai { background: #ffc5d1; }
+      button.hapus { background: #ff7b7b; color: white; }
+      .riwayat-status {
+        font-size: 13px;
+        color: #666;
+        margin-top: 5px;
+        border-left: 3px solid #e75480;
+        padding-left: 10px;
+      }
+    `;
+    document.head.appendChild(style);
+
+    // ======== TAMPILAN UTAMA ========
+    document.body.innerHTML = `
+      <div class="navbar">
+        <div class="logo">📦 <b>Tracking Pesanan</b></div>
+        <div class="nav-links">
+          <a href="#">Stok Buku</a>
+          <a href="#">Checkout</a>
+          <a href="#" class="active">Tracking</a>
+          <button class="logout-btn">Logout</button>
+        </div>
+      </div>
+
+      <div class="container">
+        <h2>Daftar Pesanan</h2>
+        <div class="search-box">
+          <input type="text" id="searchInput" placeholder="Cari nama atau status...">
+        </div>
+        <div id="orderList"></div>
+      </div>
+    `;
+
+    // ======== FUNGSI RENDER & INTERAKSI ========
+    const orderList = document.getElementById("orderList");
+    const searchInput = document.getElementById("searchInput");
+
+    function renderOrders(list) {
+      orderList.innerHTML = "";
+      list.forEach(order => {
+        const card = document.createElement("div");
+        card.className = "order-card";
+        card.innerHTML = `
+          <h3>${order.nama}</h3>
+          <p><b>ID:</b> ${order.id}</p>
+          <p><b>Alamat:</b> ${order.alamat}</p>
+          <p><b>Items:</b> ${order.items}</p>
+          <p><b>Harga:</b> ${order.harga}</p>
+          <p><b>Tanggal:</b> ${order.tanggal}</p>
+          <p><b>Status:</b> ${order.status}</p>
+          <div class="riwayat-status">
+            <b>Riwayat:</b>
+            <ul>${order.riwayat.map(r => `<li>${r}</li>`).join("")}</ul>
+          </div>
+          <div class="status-buttons">
+            <button class="kemas" onclick="updateStatus('${order.id}','Sedang dikemas')">Sedang dikemas</button>
+            <button class="kirim" onclick="updateStatus('${order.id}','Sedang dikirim')">Dikirim</button>
+            <button class="selesai" onclick="updateStatus('${order.id}','Selesai')">Selesai</button>
+            <button class="hapus" onclick="hapusOrder('${order.id}')">Hapus</button>
+          </div>
+        `;
+        orderList.appendChild(card);
+      });
+    }
+
+    // ======== FUNGSI UPDATE STATUS ========
+    window.updateStatus = function(id, newStatus) {
+      const order = orders.find(o => o.id === id);
+      if (order) {
+        order.status = newStatus;
+        order.riwayat.push(newStatus);
+        renderOrders(orders);
+      }
+    };
+
+    // ======== FUNGSI HAPUS PESANAN ========
+    window.hapusOrder = function(id) {
+      const index = orders.findIndex(o => o.id === id);
+      if (index !== -1) {
+        if (confirm("Yakin ingin menghapus pesanan ini?")) {
+          orders.splice(index, 1);
+          renderOrders(orders);
+        }
+      }
+    };
+
+    // ======== FITUR PENCARIAN ========
+    searchInput.addEventListener("input", () => {
+      const keyword = searchInput.value.toLowerCase();
+      const filtered = orders.filter(o =>
+        o.nama.toLowerCase().includes(keyword) ||
+        o.status.toLowerCase().includes(keyword)
+      );
+      renderOrders(filtered);
+    });
+
+    // Render awal
+    renderOrders(orders);
+  </script>
+</body>
+</html>

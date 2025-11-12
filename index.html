@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Login | Toko Buku Ceria</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <script src="js/data.js"></script> <!-- must load first -->
+  <script src="js/script.js" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="brand"><span class="logo">📚</span> Toko Buku Ceria</div>
+  </header>
+
+  <main class="center-page">
+    <div class="card auth-card">
+      <h1 class="title">Login Toko Buku Ceria</h1>
+
+      <form id="formLogin" onsubmit="loginUser(event)" class="form">
+        <input id="emailLogin" type="email" placeholder="Email" required />
+        <input id="passwordLogin" type="password" placeholder="Password" required />
+        <button class="btn primary" type="submit">Masuk</button>
+      </form>
+
+      <p class="muted">Belum punya akun? <a href="register.html">Daftar di sini</a></p>
+      <p class="muted small">Admin contoh: <b>admin@gmail.com</b> / <b>12345</b></p>
+    </div>
+  </main>
+</body>
+</html>

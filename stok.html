@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Stok / Katalog | Toko Buku Ceria</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <script src="js/data.js"></script>
+  <script src="js/script.js" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="brand"><span class="logo">📚</span> Toko Buku Ceria</div>
+    <nav class="nav">
+      <a href="dashboard.html">Home</a>
+      <a class="active" href="stok.html">Stok Buku</a>
+      <a href="checkout.html">Checkout</a>
+      <a href="tracking.html">Tracking</a>
+      <button class="btn ghost" onclick="logout()">Logout</button>
+    </nav>
+  </header>
+
+  <main class="page">
+    <h2 class="section-title">📚 Daftar Buku</h2>
+
+    <div class="cards" id="cardsContainer">
+      <!-- kartu buku diisi oleh script -->
+    </div>
+
+    <h3>➕ Tambah Buku (admin)</h3>
+    <form id="formTambah" onsubmit="tambahBukuLocal(event)" class="form-inline">
+      <input id="judul" placeholder="Judul" required />
+      <input id="penulis" placeholder="Penulis" required />
+      <input id="harga" type="number" placeholder="Harga" required />
+      <input id="stok" type="number" placeholder="Stok" required />
+      <input id="gambar" placeholder="Nama file gambar di folder img (mis: example.jpg)" required />
+      <button class="btn" type="submit">Tambah</button>
+    </form>
+  </main>
+
+  <script>
+    // tampilkan daftar buku
+    function renderCatalog() {
+      const container = document.getElementById("cardsContainer");
+      const data = JSON.parse(localStorage.getItem("dataBuku")) || [];
+      container.innerHTML = "";
+      data.forEach((b, i) => {
+        const card = document.createElement("article");
+        card.className = "book-card";
+        card.innerHTML = `
+          <div class="book-img-wrap">
+            <img src="img/${b.gambar}" alt="${b.judul}">
+          </div>
+          <h4>${b.judul}</h4>
+          <p class="muted">By ${b.penulis}</p>
+          <p class="price">Rp${b.harga}</p>
+          <p class="muted">Stok: ${b.stok}</p>
+       <div class="card-actions">
+  <button class="btn" onclick="addToCart(${i})">🛒</button>
+  <button class="btn ghost" onclick="editBuku(${i})">✏️</button>
+  <button class="btn danger" onclick="hapusBuku(${i})">🗑️</button>
+</div>
+
+
+
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function tambahBukuLocal(e) {
+      e.preventDefault();
+      const judul = document.getElementById("judul").value.trim();
+      const penulis = document.getElementById("penulis").value.trim();
+      const harga = Number(document.getElementById("harga").value);
+      const stok = Number(document.getElementById("stok").value);
+      const gambar = document.getElementById("gambar").value.trim();
+
+      if (!judul || !penulis || !harga || !stok || !gambar) return alert("Lengkapi semua data!");
+      let data = JSON.parse(localStorage.getItem("dataBuku")) || [];
+      data.push({ judul, penulis, harga, stok, gambar });
+      localStorage.setItem("dataBuku", JSON.stringify(data));
+      renderCatalog();
+      document.getElementById("formTambah").reset();
+      updateDashboardStats();
+    }
+
+    function hapusBuku(index) {
+      if (!confirm("Hapus buku ini?")) return;
+      let data = JSON.parse(localStorage.getItem("dataBuku")) || [];
+      data.splice(index,1);
+      localStorage.setItem("dataBuku", JSON.stringify(data));
+      renderCatalog();
+      updateDashboardStats();
+    }
+
+    function editBuku(index) {
+  let data = JSON.parse(localStorage.getItem("dataBuku")) || [];
+  const buku = data[index];
+
+  // isi ulang form tambah buku dengan data yang mau diubah
+  document.getElementById("judul").value = buku.judul;
+  document.getElementById("penulis").value = buku.penulis;
+  document.getElementById("harga").value = buku.harga;
+  document.getElementById("stok").value = buku.stok;
+  document.getElementById("gambar").value = buku.gambar;
+
+  // ubah tombol submit agar jadi "Update"
+  const tombol = document.querySelector("#formTambah button");
+  tombol.textContent = "Update Buku";
+  tombol.onclick = function (e) {
+    e.preventDefault();
+    buku.judul = document.getElementById("judul").value.trim();
+    buku.penulis = document.getElementById("penulis").value.trim();
+    buku.harga = Number(document.getElementById("harga").value);
+    buku.stok = Number(document.getElementById("stok").value);
+    buku.gambar = document.getElementById("gambar").value.trim();
+
+    // simpan perubahan
+    data[index] = buku;
+    localStorage.setItem("dataBuku", JSON.stringify(data));
+
+    // reset form dan tampilkan ulang katalog
+    renderCatalog();
+    tombol.textContent = "Tambah";
+    tombol.onclick = null; // hapus event custom
+    document.getElementById("formTambah").reset();
+    alert("Data buku berhasil diperbarui!");
+  };
+}
+
+
+    // add to cart
+    function addToCart(index) {
+      let data = JSON.parse(localStorage.getItem("dataBuku")) || [];
+      if (!data[index] || data[index].stok <= 0) { alert("Stok kosong!"); return; }
+      let cart = JSON.parse(localStorage.getItem("cart")) || [];
+      // cek sudah ada
+      const found = cart.find(c => c.index === index);
+      if (found) { found.qty += 1; }
+      else cart.push({ index, qty: 1, judul: data[index].judul, harga: data[index].harga, gambar: data[index].gambar });
+      localStorage.setItem("cart", JSON.stringify(cart));
+      alert("Berhasil ditambahkan ke keranjang");
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      renderCatalog();
+    });
+  </script>
+</body>
+</html>

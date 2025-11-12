@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Daftar | Toko Buku Ceria</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <script src="js/data.js"></script>
+  <script src="js/script.js" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="brand"><span class="logo">📚</span> Toko Buku Ceria</div>
+  </header>
+
+  <main class="center-page">
+    <div class="card auth-card">
+      <h1 class="title">Daftar Akun Baru</h1>
+
+      <form id="formRegister" onsubmit="registerUser(event)" class="form">
+        <input id="nama" type="text" placeholder="Nama Lengkap" required />
+        <input id="email" type="email" placeholder="Email" required />
+        <input id="password" type="password" placeholder="Password" required />
+        <button class="btn primary" type="submit">Daftar</button>
+      </form>
+
+      <p class="muted">Sudah punya akun? <a href="index.html">Login di sini</a></p>
+    </div>
+  </main>
+</body>
+</html>

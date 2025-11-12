@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard | Toko Buku Ceria</title>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      background: linear-gradient(to bottom right, aquamarine, pink);
+      min-height: 100vh;
+      padding: 0;
+    }
+
+    header {
+      background: white;
+      padding: 15px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    header h1 {
+      font-size: 22px;
+      color: #222;
+    }
+
+    nav a {
+      margin: 0 15px;
+      color: #004d40;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    nav a:hover {
+      color: #e91e63;
+    }
+
+    .logout-btn {
+      background: #ffe6f0;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .container {
+      padding: 30px;
+    }
+
+    .welcome {
+      background: white;
+      border-radius: 12px;
+      padding: 25px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+      text-align: center;
+    }
+
+    .welcome h2 {
+      color: #222;
+      margin-bottom: 10px;
+    }
+
+    .stats {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 25px;
+      gap: 20px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 10px;
+      padding: 20px;
+      width: 180px;
+      text-align: center;
+      box-shadow: 0 0 8px rgba(0,0,0,0.1);
+    }
+
+    .card h3 {
+      margin: 0;
+      color: #00796b;
+    }
+
+    .card p {
+      font-size: 20px;
+      font-weight: bold;
+      color: #e91e63;
+    }
+
+    .rekomen {
+      margin-top: 40px;
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+
+    .rekomen h3 {
+      color: #333;
+      margin-bottom: 15px;
+    }
+
+    .rekomen-tabel {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      background: white;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .rekomen-tabel th, .rekomen-tabel td {
+      border: 1px solid #ddd;
+      padding: 10px;
+      text-align: left;
+    }
+
+    .rekomen-tabel th {
+      background-color: aquamarine;
+    }
+
+    .rekomen-tabel tr:hover {
+      background-color: #ffe6f0;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>📚 Toko Buku Ceria</h1>
+    <nav>
+      <a href="stok.html">Stok Buku</a>
+      <a href="checkout.html">Checkout</a>
+      <a href="tracking.html">Tracking</a>
+    </nav>
+    <button class="logout-btn">Logout</button>
+  </header>
+
+  <div class="container">
+    <div class="welcome">
+      <h2>Welcome to Toko Buku Ceria 💖</h2>
+      <p>Temukan buku favoritmu dengan nuansa <strong>Aquamarine</strong> & <strong>Pink Tulip</strong>!</p>
+      
+    </div>
+
+    <div class="stats">
+      <div class="card">
+        <h3>Total Buku</h3>
+        <p>5</p>
+      </div>
+      <div class="card">
+        <h3>Akun</h3>
+        <p>1</p>
+      </div>
+      <div class="card">
+        <h3>Pesanan</h3>
+        <p>1</p>
+      </div>
+      <div class="card">
+        <h3>Buku Terlaris 📚</h3>
+        <p>Laskar Pelangi</p>
+        <small>15 kali dipesan</small>
+      </div>
+    </div>
+
+    <div class="rekomen">
+      <h3>📦 Rekomendasi Penambahan Stok</h3>
+      <table class="rekomen-tabel">
+        <tr>
+          <th>Judul Buku</th>
+          <th>Stok Sekarang</th>
+        </tr>
+        <tr>
+          <td>Laskar Pelangi</td>
+          <td>2</td>
+        </tr>
+        <tr>
+          <td>Dilan 1990</td>
+          <td>1</td>
+        </tr>
+        <tr>
+          <td>Imperfect</td>
+          <td>3</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</body>
+</html>
